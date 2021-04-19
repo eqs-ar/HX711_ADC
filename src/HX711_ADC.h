@@ -1,8 +1,7 @@
 /*
    -------------------------------------------------------------------------------------
-   HX711_ADC
-   Arduino library for HX711 24-Bit Analog-to-Digital Converter for Weight Scales
-   Olav Kallhovd sept2017
+   HX711_ADC 4 Biblioteca Arduino para convertidor analógico-digital HX711 de 24 bits 
+   para básculas de peso 5 Olav Kallhovd septiembre de 2017
    -------------------------------------------------------------------------------------
 */
 
@@ -13,10 +12,10 @@
 #include "config.h"
 
 /*
-Note: HX711_ADC configuration values has been moved to file config.h
+Nota: Los valores de configuración de HX711_ADC se han movido al archivo config.h
 */
 
-#define DATA_SET 	SAMPLES + IGN_HIGH_SAMPLE + IGN_LOW_SAMPLE // total samples in memory
+#define DATA_SET 	SAMPLES + IGN_HIGH_SAMPLE + IGN_LOW_SAMPLE // muestras totales en la memoria
 
 #if (SAMPLES  != 1) & (SAMPLES  != 2) & (SAMPLES  != 4) & (SAMPLES  != 8) & (SAMPLES  != 16) & (SAMPLES  != 32) & (SAMPLES  != 64) & (SAMPLES  != 128)
 	#error "number of SAMPLES not valid!"
