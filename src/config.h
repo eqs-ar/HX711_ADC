@@ -88,13 +88,14 @@ Como se puede ver utilizar 128 valores demandará mucha memoria RAM y procesos d
 
 #define SCK_DELAY					0		//default value: 0
 
-//------------------------------------------------------------------------------------------------------------------
+
 /**********************************************************************************************
 *********************    Administración de las interrupciones      ****************************
-***********************************************************************************************7
-//si tiene otras rutinas de interrupción que consumen mucho tiempo (> 60 μs) que se activan mientras el pin sck está alto,
-//esto podría configurar involuntariamente el HX711 en el modo de "apagado"
-//si es necesario, puede cambiar el valor a '1' para deshabilitar las interrupciones al escribir en el pin sck
+***********************************************************************************************
+si tiene otras rutinas de interrupción que consumen mucho tiempo (> 60 μs) que se activan mientras el pin sck está alto,
+esto podría configurar involuntariamente el HX711 en el modo de "apagado"
+si es necesario, puede cambiar el valor a '1' para deshabilitar las interrupciones al escribir en el pin sck
+*/
 
 #define SCK_DISABLE_INTERRUPTS		0		//default value: 0
 
