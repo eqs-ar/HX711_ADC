@@ -1,7 +1,24 @@
 /*
    -------------------------------------------------------------------------------------
    HX711_ADC 4 Biblioteca Arduino para convertidor analógico-digital HX711 de 24 bits 
-   para básculas de peso 5 Olav Kallhovd septiembre de 2017
+   para proyectos que requieran alta resolución y frecuencia de muestreo no mayor a
+   80 muestras por segundos o menor.
+   USOS RECOMENDADOS 
+   	*instrumental de medición
+   	  - básculas de peso 
+	  - termómetros.
+	  - PH Meter
+	  - Pirometros PIR
+	  - Tester de laboratorio
+	  - otros similares y/o convinación de ellos
+   
+   El tiípo de uso será muy dependiente de la cantidad de muestras en mememoria y la resolucion de la medicion así 
+   también la relación señal ruido de la instrumentación 
+   Es recomendable que vea el datashhet del HX711 para sacarle el mayor provecho a su proyecto.
+   Recuerde que todos los ADC de alta resolución son muy sensibles a las perturvaciones electricas y
+   no siempre se puede resolver esto por software. 
+   Dedique principal atención al desarrollo del blindaje al ruido eléctrico de su proyecto
+   
    -------------------------------------------------------------------------------------
 */
 
@@ -14,8 +31,8 @@
 /*
 Nota: Los valores de configuración de HX711_ADC se han movido al archivo config.h
 */
-
-#define DATA_SET 	SAMPLES + IGN_HIGH_SAMPLE + IGN_LOW_SAMPLE // muestras totales en la memoria
+// define las muestras totales en la memoria
+#define DATA_SET 	SAMPLES + IGN_HIGH_SAMPLE + IGN_LOW_SAMPLE 
 
 #if (SAMPLES  != 1) & (SAMPLES  != 2) & (SAMPLES  != 4) & (SAMPLES  != 8) & (SAMPLES  != 16) & (SAMPLES  != 32) & (SAMPLES  != 64) & (SAMPLES  != 128)
 	#error "number of SAMPLES not valid!"
@@ -49,37 +66,37 @@ class HX711_ADC
 {	
 		
 	public:
-		HX711_ADC(uint8_t dout, uint8_t sck); 		//constructor
-		void setGain(uint8_t gain = 128); 			//value must be 32, 64 or 128*
-		void begin();								//set pinMode, HX711 gain and power up the HX711
-		void begin(uint8_t gain);					//set pinMode, HX711 selected gain and power up the HX711
-		void start(unsigned long t); 					//start HX711 and do tare 
+		HX711_ADC(uint8_t dout, uint8_t sck); 		        //constructor
+		void setGain(uint8_t gain = 128); 			//el valor debe ser 32, 64 or 128*
+		void begin();						//configure pinMode, ganancia HX711 y encienda el HX711
+		void begin(uint8_t gain);				//set pinMode, HX711 selected gain and power up the HX711
+		void start(unsigned long t); 				//start HX711 and do tare 
 		void start(unsigned long t, bool dotare);		//start HX711, do tare if selected
 		int startMultiple(unsigned long t); 			//start and do tare, multiple HX711 simultaniously
 		int startMultiple(unsigned long t, bool dotare);	//start and do tare if selected, multiple HX711 simultaniously
-		void tare(); 								//zero the scale, wait for tare to finnish (blocking)
-		void tareNoDelay(); 						//zero the scale, initiate the tare operation to run in the background (non-blocking)
-		bool getTareStatus();						//returns 'true' if tareNoDelay() operation is complete
+		void tare(); 						//zero the scale, wait for tare to finnish (blocking)
+		void tareNoDelay(); 					//zero the scale, initiate the tare operation to run in the background (non-blocking)
+		bool getTareStatus();					//returns 'true' if tareNoDelay() operation is complete
 		void setCalFactor(float cal); 				//set new calibration factor, raw data is divided by this value to convert to readable data
-		float getCalFactor(); 						//returns the current calibration factor
-		float getData(); 							//returns data from the moving average dataset 
-		int getReadIndex(); 						//for testing and debugging
-		float getConversionTime(); 					//for testing and debugging
-		float getSPS();								//for testing and debugging
-		bool getTareTimeoutFlag();					//for testing and debugging
-		void disableTareTimeout();					//for testing and debugging
-		long getSettlingTime();						//for testing and debugging
-		void powerDown(); 							//power down the HX711
-		void powerUp(); 							//power up the HX711
-		long getTareOffset();						//get the tare offset (raw data value output without the scale "calFactor")
+		float getCalFactor(); 					//returns the current calibration factor
+		float getData(); 					//returns data from the moving average dataset 
+		int getReadIndex(); 					//for testing and debugging
+		float getConversionTime(); 				//for testing and debugging
+		float getSPS();						//for testing and debugging
+		bool getTareTimeoutFlag();				//for testing and debugging
+		void disableTareTimeout();				//for testing and debugging
+		long getSettlingTime();					//for testing and debugging
+		void powerDown(); 					//power down the HX711
+		void powerUp(); 					//power up the HX711
+		long getTareOffset();					//get the tare offset (raw data value output without the scale "calFactor")
 		void setTareOffset(long newoffset);			//set new tare offset (raw data value input without the scale "calFactor")
-		uint8_t update(); 							//if conversion is ready; read out 24 bit data and add to dataset
+		uint8_t update(); 					//if conversion is ready; read out 24 bit data and add to dataset
 		void setSamplesInUse(int samples);			//overide number of samples in use
-		int getSamplesInUse();						//returns current number of samples in use
-		void resetSamplesIndex();					//resets index for dataset
-		bool refreshDataSet();						//Fill the whole dataset up with new conversions, i.e. after a reset/restart (this function is blocking once started)
-		bool getDataSetStatus();					//returns 'true' when the whole dataset has been filled up with conversions, i.e. after a reset/restart
-		float getNewCalibration(float known_mass);	//returns and sets a new calibration value (calFactor) based on a known mass input
+		int getSamplesInUse();					//returns current number of samples in use
+		void resetSamplesIndex();				//resets index for dataset
+		bool refreshDataSet();					//Fill the whole dataset up with new conversions, i.e. after a reset/restart (this function is blocking once started)
+		bool getDataSetStatus();				//returns 'true' when the whole dataset has been filled up with conversions, i.e. after a reset/restart
+		float getNewCalibration(float known_mass);		//returns and sets a new calibration value (calFactor) based on a known mass input
 		bool getSignalTimeoutFlag();				//returns 'true' if it takes longer time then 'SIGNAL_TIMEOUT' for the dout pin to go low after a new conversion is started
 
 	protected:
