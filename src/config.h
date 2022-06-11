@@ -52,20 +52,28 @@ setSamplesInUse(samples).
 SAMPLES es el número de muestras en el conjunto de datos de promedio móvil o media movil, 
 los valores que se esperan pueden ser 1, 2, 4, 8, 16, 32, 64 or 128.
 
-La media móvil es un Filtro digital utilizado para analizar un conjunto de datos en modo de puntos para crear series de promedios.
+La media móvil es un Filtro digital PASA_BAJOS utilizado para analizar un conjunto de datos 
+en modo de una serie de Puntos Temporales para crear series de promedios en formas de subconjuntos de valores.
 Así las medias móviles son una lista de números en la cual cada uno es el promedio de un subconjunto de los datos originales.
-Por ejemplo, si se tiene un conjunto de 100 datos,
-el primer valor de la serie de medias móviles podría ser el promedio de los primeros 25 términos, 
-luego el promedio de los términos 2 al 26, el tercer elemento de los términos 3 al 27 y así,
-hasta por último el promedio de los últimos 25 números del 76 al 100.
+Por ejemplo, si se tiene un conjunto de 128 datos distribuidos homogeniamente en el tiempo, a períodos regulares 
+o que tiendan a ser regulares.
+El primer valor de la serie de medias móviles podría ser el promedio de los primeros 32 términos, 
+luego el promedio de los términos 2 al 33, el tercer elemento de los términos 3 al 34 y así,
+hasta por último el promedio de los últimos 32 números del 96 al 128.
 Una serie de medias móviles puede ser calculada para cualquier serie de tiempo.
-Por lo tanto los PID, las transformada de fourier y Laplace pueden ser sensibles a este filtro.
-Se usa para demanda estable, sin tendencia ni estacionalidad;  suaviza las fluctuaciones de plazos cortos, resaltando así las tendencias o ciclos de plazos largos.
+Por lo tanto los PID, las transformada de fourier y Laplace pueden ser sensibles a este filtro si la serie es demaciado larga.
+Se usa para demanda estable, sin tendencia ni estacionalidad;  suaviza las fluctuaciones de plazos cortos,
+resaltando así las tendencias o ciclos de plazos largos.
+Como se puede ver utilizar 128 valores demandará mucha memoria RAM y procesos de la ALU
 */
 #define SAMPLES 					16		//Valor por defecto al inicializar: 16
 
-//adds extra sample(s) to the dataset and ignore peak high/low sample, value must be 0 or 1.
-//agrega muestra(s) adicional(es) al conjunto de datos e ignora la muestra pico alta/baja, el valor debe ser 0 o 1
+
+
+/**********************************************************************************************
+**********************     IGN_HIGH_SAMPLE &  IGN_LOW_SAMPLE        ***************************
+***********************************************************************************************/
+//agrega muestra(s) adicional(es) al conjunto de datos e ignora la muestra peak alta/baja, el valor debe ser 0 o 1
 #define IGN_HIGH_SAMPLE 			1		//Valor por defecto al inicializar: 1
 #define IGN_LOW_SAMPLE 				1		//Valor por defecto al inicializar: 1
 
