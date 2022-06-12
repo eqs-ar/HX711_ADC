@@ -16,14 +16,14 @@ HX711_ADC::HX711_ADC(uint8_t dout, uint8_t sck) //constructor
 	sckPin = sck;
 } 
 
-void HX711_ADC::setGain(uint8_t gain)  //value should be 32, 64 or 128*
+void HX711_ADC::setGain(uint8_t gain)  //el valor debe ser 32, 64 or 128*
 {
 	if(gain < 64) GAIN = 2; //32, channel B
 	else if(gain < 128) GAIN = 3; //64, channel A
 	else GAIN = 1; //128, channel A
 }
 
-//set pinMode, HX711 gain and power up the HX711
+//configure pinMode, ganancia HX711 y encienda el HX711
 void HX711_ADC::begin()
 {
 	pinMode(sckPin, OUTPUT);
@@ -32,7 +32,7 @@ void HX711_ADC::begin()
 	powerUp();
 }
 
-//set pinMode, HX711 selected gain and power up the HX711
+//establezca pinMode, ganancia seleccionada HX711 y encienda el HX711
 void HX711_ADC::begin(uint8_t gain)
 {
 	pinMode(sckPin, OUTPUT);
@@ -42,8 +42,12 @@ void HX711_ADC::begin(uint8_t gain)
 }
 
 /*  start(t): 
-*	will do conversions continuously for 't' +400 milliseconds (400ms is min. settling time at 10SPS). 
-*   Running this for 1-5s in setup() - before tare() seems to improve the tare accuracy */
+*	hará conversiones continuamente para 't' + 400 milliseconds 
+        (400ms es mínimo settling time para 10SPS). 
+*   Ejecutar esto durante 1-5 segundos en la configuración () -
+    antes de la tara () parece mejorar la precisión de la tara */
+
+
 void HX711_ADC::start(unsigned long t)
 {
 	t += 400;
@@ -76,7 +80,7 @@ void HX711_ADC::start(unsigned long t, bool dotare)
 	}
 }	
 
-/*  startMultiple(t): use this if you have more than one load cell and you want to do tare and stabilization simultaneously.
+/*  startMultiple(t): use esto si tiene más de una celda de carga y desea realizar la tara y la estabilización simultáneamente..
 *	Will do conversions continuously for 't' +400 milliseconds (400ms is min. settling time at 10SPS). 
 *   Running this for 1-5s in setup() - before tare() seems to improve the tare accuracy */
 int HX711_ADC::startMultiple(unsigned long t)
@@ -128,6 +132,7 @@ int HX711_ADC::startMultiple(unsigned long t)
 *	use this if you have more than one load cell and you want to (do tare and) stabilization simultaneously.
 *	Will do conversions continuously for 't' +400 milliseconds (400ms is min. settling time at 10SPS). 
 *   Running this for 1-5s in setup() - before tare() seems to improve the tare accuracy */
+
 int HX711_ADC::startMultiple(unsigned long t, bool dotare)
 {
 	tareTimeoutFlag = 0;
@@ -177,7 +182,7 @@ int HX711_ADC::startMultiple(unsigned long t, bool dotare)
 	return startStatus;
 }
 
-//zero the scale, wait for tare to finnish (blocking)
+//poner a cero la balanza, esperar a que finalice la tara (bloqueo)
 void HX711_ADC::tare() 
 {
 	uint8_t rdy = 0;
@@ -207,7 +212,7 @@ void HX711_ADC::tareNoDelay()
 	tareTimes = 0;
 }
 
-//set new calibration factor, raw data is divided by this value to convert to readable data
+//establezca un nuevo factor de calibración, los datos sin procesar se dividen por este valor para convertirlos en datos legibles
 void HX711_ADC::setCalFactor(float cal) 
 {
 	calFactor = cal;
@@ -222,7 +227,7 @@ bool HX711_ADC::getTareStatus()
 	return t;
 }
 
-//returns the current calibration factor
+//devuelve el factor de calibración actua
 float HX711_ADC::getCalFactor() 
 {
 	return calFactor;
@@ -253,7 +258,7 @@ uint8_t HX711_ADC::update()
 	return convRslt;
 }
 
-float HX711_ADC::getData() // return fresh data from the moving average dataset
+float HX711_ADC::getData() // devolver datos nuevos del conjunto de datos de promedio móvil
 {
 	long data = 0;
 	lastSmoothedData = smoothedData();
@@ -288,7 +293,7 @@ long HX711_ADC::smoothedData()
 
 }
 
-void HX711_ADC::conversion24bit()  //read 24 bit data, store in dataset and start the next conversion
+void HX711_ADC::conversion24bit()  //lea datos de 24 bits, almacene en el conjunto de datos y comience la siguiente conversión
 {
 	conversionTime = micros() - conversionStartTime;
 	conversionStartTime = micros();
